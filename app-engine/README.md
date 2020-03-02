@@ -52,11 +52,11 @@ It is behind small projects like https://github.com/klenwell/decruiter and large
 5. Run local development server.
 
     ```
-    cd my-new-project
-    dev_appserver.py --port=8080 --admin_port=8081 --api_port=8082 ./app-engine
+    cd ..
+    dev_appserver.py --port=3000 --admin_port=3001 --api_port=3002 ./app-engine
     ```
 
-    Visit the application [http://localhost:8080](http://localhost:8080)
+    Visit the application [http://localhost:3000](http://localhost:3000)
 
     See [the development server documentation](https://developers.google.com/appengine/docs/python/tools/devserver) for options when running dev_appserver.
 
@@ -65,7 +65,7 @@ It is behind small projects like https://github.com/klenwell/decruiter and large
 
 First, install testing libraries:
 
-    cd my-new-project/app-engine
+    cd crudcraft/app-engine
     pip install -r requirements-test.txt
 
 Then update `nose.cfg` settings, especially:
@@ -74,7 +74,7 @@ Then update `nose.cfg` settings, especially:
 
 To run tests:
 
-    cd my-new-project/app-engine
+    cd crudcraft/app-engine
     nosetests -c nose.cfg
 
 With coverage:
