@@ -1,0 +1,102 @@
+# This file specifies your Python application's runtime configuration
+# including URL routing, versions, static file uploads, etc. See
+# https://developers.google.com/appengine/docs/python/config/appconfig
+# for details.
+
+# default: production
+version: staging
+
+application: hip-flask-on
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+
+inbound_services:
+# https://cloud.google.com/appengine/docs/python/mail/receiving-mail-with-mail-api
+# Enable mail services
+- mail
+- mail_bounce
+
+
+# Handlers define how to route requests to your application.
+handlers:
+
+  #
+  # Static directories
+  #
+- url: /assets
+  static_dir: assets
+
+- url: /favicon\.ico
+  static_files: assets/images/favicon.ico
+  upload: assets/images/favicon\.ico
+
+- url: /robots\.txt
+  static_files: assets/webtools/robots.txt
+  upload: assets/media/robots.txt
+
+- url: /sitemap\.txt
+  static_files: assets/webtools/sitemap.txt
+  upload: assets/media/sitemap.txt
+
+  #
+  # Guests
+  #
+- url: /profile(/.*)?
+  script: controllers.guests.app
+
+- url: /guests(/.*)?
+  script: controllers.guests.app
+
+- url: /admin/guests(/.*)?
+  script: controllers.guests.app
+  login: admin
+
+  #
+  # Guest Requests
+  #
+- url: /guest-requests(/.*)?
+  script: controllers.guest_requests.app
+
+- url: /admin/guest-requests(/.*)?
+  script: controllers.guest_requests.app
+  login: admin
+
+  #
+  # API Controller Endpoints
+  #
+- url: /api(/.*)?
+  script: controllers.pages.app
+
+  #
+  # Admin Controller Endpoints
+  #
+- url: /admin(/.*)?
+  script: controllers.pages.app
+  login: admin
+
+  #
+  # Auth
+  #
+- url: /login(/.*)?
+  script: controllers.auth.app
+
+- url: /logout(/.*)?
+  script: controllers.auth.app
+
+- url: /auth(/.*)?
+  script: controllers.auth.app
+
+  #
+  # Mail Handlers
+  #
+- url: /_ah/mail/.+
+  script: handlers.mail.app
+  login: admin
+
+  #
+  # Default Route
+  #
+- url: .*
+  script: controllers.pages.app
