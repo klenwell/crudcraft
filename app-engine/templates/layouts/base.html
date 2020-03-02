@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- These 3 meta tags *must* come first in the head; any other head content
+         must come *after* these tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{{ PROJECT_NAME }}{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" crossorigin="anonymous"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" />
+    <link rel="stylesheet" crossorigin="anonymous"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" />
+    <link rel="stylesheet" crossorigin="anonymous"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css"
+          integrity="sha256-rFMLRbqAytD9ic/37Rnzr2Ycy/RlpxE5QH52h7VoIZo=" />
+    <link rel="stylesheet" href="/assets/stylesheets/application.css" />
+
+    <!-- Fonts -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="icon" href="/favicon.ico?v20161031" />
+
+    {% block append_head %}{% endblock %}
+  </head>
+
+  <body>
+    {% include "layouts/_navbar.html" %}
+
+    {% include "layouts/_flash.html" %}
+
+    <div class="container content">
+      {% block content %}{% endblock %}
+    </div>
+
+    {% include "layouts/_footer.html" %}
+
+    {#
+     # Javascript
+     #}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script crossorigin="anonymous"
+            src="https://code.jquery.com/jquery-2.2.4.js"
+            integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="></script>
+    <script crossorigin="anonymous"
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="></script>
+
+    <!-- Bootstrap -->
+    <script crossorigin="anonymous"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>
+
+    <!-- Moment.js: required by application.js -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+
+    <!-- Project -->
+    <script src="/assets/javascripts/application.js"></script>
+
+    {#
+     # Can be used by view templates to attach additional page-specific javascript.
+     #}
+    {% block javascripts %}{% endblock %}
+
+    {% include "layouts/_analytics.html" %}
+  </body>
+</html>
