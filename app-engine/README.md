@@ -94,7 +94,7 @@ To run a single test:
 2. [Deploy the application](https://developers.google.com/appengine/docs/python/tools/uploadinganapp):
 
    ```
-   appcfg.py update -A <your-app-id> -e <your-user-name> ./app-engine
+   appcfg.py update -e klenwell ./app-engine
    ```
 
-3. Congratulations!  Your application is now live at your-app-id.appspot.com
+3. Congratulations!  Your application is now live at crudcraft.appspot.com
