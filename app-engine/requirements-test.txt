@@ -13,3 +13,6 @@ mock
 
 # To test email handler.
 WebTest
+
+# Linter
+flake8
