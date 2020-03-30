@@ -27,8 +27,8 @@ class Crud(ndb.Model):
 
     # References
     creator_key = ndb.KeyProperty(required=True)    # kind=Guest
-    parent_key = ndb.KeyProperty(required=True)    # kind=Crud
-    child_keys = ndb.KeyProperty(repeated=True)    # kind=Crud
+    parent_key = ndb.KeyProperty(required=False)    # kind=Crud
+    child_keys = ndb.KeyProperty(repeated=False)    # kind=Crud
 
     # Timestamps
     created_at = ndb.DateTimeProperty(auto_now_add=True)
