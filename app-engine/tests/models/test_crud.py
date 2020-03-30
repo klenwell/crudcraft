@@ -31,7 +31,7 @@ class GuestModelTest(AppEngineModelTest):
 
         # Act
         with self.assertRaises(db.BadValueError) as c:
-            crud = Crud.create(creator, message)
+            Crud.create(creator, message)
 
         # Assert
         self.assertEqual(str(c.exception), "Entity has uninitialized properties: message")
@@ -43,7 +43,7 @@ class GuestModelTest(AppEngineModelTest):
 
         # Act
         with self.assertRaises(AttributeError) as c:
-            crud = Crud.create(creator, message)
+            Crud.create(creator, message)
 
         # Assert
         self.assertEqual(str(c.exception), "'NoneType' object has no attribute 'key'")
