@@ -75,3 +75,8 @@ class Crud(ndb.Model):
     @staticmethod
     def read(public_id):
         return Crud.get_by_public_id(public_id)
+
+    # Scope Methods
+    @staticmethod
+    def s_recently_created(limit=100):
+        return Crud.query().order(-Crud.created_at).fetch(limit)
