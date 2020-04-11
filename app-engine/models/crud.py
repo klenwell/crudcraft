@@ -20,7 +20,7 @@ class Crud(ndb.Model):
     # Attrs
     #
     # Fields
-    message = ndb.StringProperty(required=True)
+    content = ndb.StringProperty(required=True)
     read_count = ndb.IntegerProperty(default=0)
     edit_count = ndb.IntegerProperty(default=0)
     delete_count = ndb.IntegerProperty(default=0)
@@ -66,9 +66,9 @@ class Crud(ndb.Model):
     #
     # CRUD Methods
     @staticmethod
-    def create(creator, message):
+    def create(creator, content):
         crud = Crud(creator_key=creator.key,
-                    message=message)
+                    content=content)
         crud.put()
         return crud
 

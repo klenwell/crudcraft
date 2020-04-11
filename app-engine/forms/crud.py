@@ -19,7 +19,7 @@ class CrudForm(FlaskForm):
 
     def preset(self, crud):
         self.public_id.data = crud.public_id
-        self.message.data = crud.message
+        self.content.data = crud.content
 
     def validate_update(self):
         # Avoid recursion: http://flask.pocoo.org/snippets/64/

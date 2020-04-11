@@ -33,7 +33,7 @@ def cruds_create():
     creator = g.uest
 
     if form.validate():
-        created_crud = Crud.create(creator, form.message.data)
+        created_crud = Crud.create(creator, form.content.data)
         return redirect(url_for('cruds_show', public_id=created_crud.public_id))
     else:
         return render_template('cruds/new.html', form=form)
