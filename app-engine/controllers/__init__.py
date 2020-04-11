@@ -143,6 +143,20 @@ def redirect_on_cancel():
         return wrapped
     return wrapper
 
+#
+# Authorization Filters
+#
+def authenticated_only():
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not g.uest.is_authenticated():
+                return render_403('This page is limited to authenticated users ' \
+                                  'at present. Please log in to view it.')
+            return f(*args, **kwargs)
+        return wrapped
+    return wrapper
+
 
 #
 # Custom JSON Encode for date objects

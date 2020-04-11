@@ -53,6 +53,12 @@ class AppEngineTestCase(TestCase):
         self.mail_stub = self.testbed.get_stub(testbed.MAIL_SERVICE_NAME)
         return self.mail_stub
 
+    def initApp(self):
+        """For cases where an Flask context may be needed for a unit test.
+        """
+        from controllers import app
+        return app
+
 class AppEngineModelTest(AppEngineTestCase):
     """Using this class with counter patch speeds up test. See models/test_prediction.py
     for example of usage.

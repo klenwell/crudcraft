@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_helper.html' as form_helper %}
+
+{% block title %}New Crud{% endblock %}
+
+{% block content %}
+<div id="crud-new" class="crud">
+    <h2>Create a Crud</h2>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <p>C is for Create. Create your Crud now.</p>
+        </div>
+    </div>
+
+    {% include "cruds/_form.html" %}
+</div>
+{% endblock %}
