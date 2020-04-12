@@ -13,7 +13,7 @@ from forms.filters import scrub
 #
 class CrudForm(FlaskForm):
     public_id = HiddenField('Required only for edit form.')
-    message = StringField('Message',
+    content = StringField('Content',
                           validators=[Required(), Length(max=280)],
                           filters=[scrub])
 
