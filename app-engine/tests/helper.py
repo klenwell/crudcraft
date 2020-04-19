@@ -5,14 +5,16 @@ from unittest import TestCase
 from unittest import skip   # As convenience for test modules.
 from os.path import abspath, dirname, join
 import hashlib
-import email
+import random
+import re
 from bs4 import BeautifulSoup
 from urlparse import urlparse
 
 from google.appengine.ext import ndb, testbed
 
 from controllers import app
-import config
+from models.guest import Guest
+from services import guest_service
 
 
 #
@@ -59,6 +61,7 @@ class AppEngineTestCase(TestCase):
         from controllers import app
         return app
 
+
 class AppEngineModelTest(AppEngineTestCase):
     """Using this class with counter patch speeds up test. See models/test_prediction.py
     for example of usage.
@@ -70,6 +73,7 @@ class AppEngineModelTest(AppEngineTestCase):
 
     def tearDown(self):
         self.testbed.deactivate()
+
 
 class AppEngineControllerTest(AppEngineModelTest):
     """Similar to Model test except it inits user stub by default.
@@ -112,12 +116,15 @@ def make_bed(**options):
 #
 # Helper Methods
 #
-project_root = lambda: abspath(join(dirname(__file__), '..'))
+def project_root():
+    return abspath(join(dirname(__file__), '..'))
+
 
 def parse_html(markup):
     # Returns
     html = BeautifulSoup(markup, 'html.parser')
     return html
+
 
 def redirect_path(response):
     if not response.location:
@@ -125,11 +132,12 @@ def redirect_path(response):
     else:
         return urlparse(response.location).path
 
+
 def extract_id_from_url(url):
     if url is None:
         return None
     else:
-        return int(re.search('\d+', url).group())
+        return int(re.search(r'\d+', url).group())
 
 
 #
@@ -150,7 +158,7 @@ class MockIdentityService(object):
         """
         email = options.get('email', 'user@gmail.com')
         user_id = hashlib.md5(email).hexdigest()
-        is_admin = str(int(options.get('is_admin', False)))
+        is_admin = str(int(options.get('as_admin', False)))
 
         test.testbed.setup_env(USER_EMAIL=email,
                                USER_ID=user_id,
@@ -160,18 +168,31 @@ class MockIdentityService(object):
         return user_id
 
     @staticmethod
-    def login_app_engine_user(test, **options):
-        options['email'] = options.get('email', 'guest@gmail.com')
-        user_id = MockIdentityService.stub_app_engine_user(test, **options)
-        return guests_fixture.app_engine_guest(**options)
+    def unauthenticated_guest(test, **options):
+        """Returns unauthenticated guest.
+        """
+        service = 'ip_address'
+        service_id = 'test.%s.%s.%s' % (random.randint(128, 1028),
+                                        random.randint(128, 1028),
+                                        random.randint(128, 1028))
+        guest = Guest.create(auth_service=service, auth_service_id=service_id)
+        return guest
 
     @staticmethod
-    def login_app_engine_admin(test, **options):
-        options['email'] = options.get('email', 'admin@gmail.com')
-        options['is_admin'] = True
-        options['auth_service_name'] = 'admin'
-        options['auth_service_id'] = MockIdentityService.stub_app_engine_user(test, **options)
-        return guests_fixture.app_engine_guest(**options)
+    def login_app_engine_user(test, **options):
+        """Stubs App Engine user service and create guest entity.
+        """
+        # Stub App Engine user.
+        app_engine_options = {
+            'email': options.get('email', 'user@gmail.com'),
+            'as_admin': options.get('as_admin', False)
+        }
+        MockIdentityService.stub_app_engine_user(test, **app_engine_options)
+
+        # Create Guest entity
+        guest = guest_service.identify_guest()
+
+        return guest
 
 
 class MockRequest(object):
