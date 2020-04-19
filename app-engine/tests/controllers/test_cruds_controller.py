@@ -72,3 +72,9 @@ class CrudsControllerTest(AppEngineControllerTest):
         # Assert
         self.assertEqual(response.status_code, 200, html)
         self.assertEqual(len(button), 1, html)
+
+    def text_expects_unauthenticated_user_to_be_denied_new_view(self):
+        pass
+
+    def text_expects_authenticated_user_to_access_new_view(self):
+        pass
