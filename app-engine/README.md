@@ -1,4 +1,4 @@
-# Hip Flask
+# Crudcraft Hipflask App Engine Implementation
 
 Hip Flask forks the [Google App Engine Flask Skeleton](https://github.com/GoogleCloudPlatform/appengine-flask-skeleton) and adds a little more meat to its bone so that you can get a [Flask](http://flask.pocoo.org) project up and running on the App Engine platform even more quickly.
 

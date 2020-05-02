@@ -74,7 +74,13 @@ class Crud(ndb.Model):
 
     @staticmethod
     def read(public_id):
-        return Crud.get_by_public_id(public_id)
+        return Crud.find_by_public_id(public_id)
+
+    @staticmethod
+    def find_by_public_id(public_id):
+        if public_id is None:
+            return None
+        return ndb.Key('Crud', int(public_id)).get()
 
     # Scope Methods
     @staticmethod

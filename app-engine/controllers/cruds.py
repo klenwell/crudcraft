@@ -37,3 +37,13 @@ def cruds_create():
         return redirect(url_for('cruds_show', public_id=created_crud.public_id))
     else:
         return render_template('cruds/new.html', form=form)
+
+
+@app.route('/cruds/<public_id>/', methods=['GET'])
+def cruds_show(public_id):
+    crud = Crud.read(public_id)
+
+    if not crud:
+        return abort(404, 'Crud not found.')
+
+    return render_template('cruds/show.html', crud=crud)
