@@ -185,3 +185,8 @@ class Guest(ndb.Model):
 
     def is_app_engine_admin(self):
         return users.is_current_user_admin()
+
+    # Permissions
+    def can_create_crud(self):
+        # TODO: switch to any authenticated user. Limit to 5 cruds per day.
+        return self.is_admin()

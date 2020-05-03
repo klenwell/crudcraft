@@ -6,7 +6,7 @@
     <h1>Recent Cruds</h1>
 
     <div class="actions">
-      {% if g.uest.is_authenticated() %}
+      {% if g.uest.is_admin() %}
         <a class="btn btn-primary btn-lg create-crud" href="/cruds/new" role="button">Create Crud</a>
       {% endif %}
     </div>
