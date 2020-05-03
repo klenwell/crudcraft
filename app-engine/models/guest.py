@@ -11,7 +11,6 @@ This model represents site visitors.
 from google.appengine.ext import ndb
 from google.appengine.api import memcache, users
 
-import config
 from models.guest_request import GuestRequest
 
 
@@ -23,6 +22,7 @@ AUTH_SERVICES = [
     'app_engine'
 ]
 
+
 #
 # Model
 #
@@ -31,17 +31,17 @@ class Guest(ndb.Model):
     # Attrs
     #
     # Fields
-    auth_service                    = ndb.StringProperty(required=True, choices=AUTH_SERVICES)
-    auth_service_id                 = ndb.StringProperty(required=True)
-    auth_service_name               = ndb.StringProperty(required=False)
-    email                           = ndb.StringProperty(required=False)
+    auth_service = ndb.StringProperty(required=True, choices=AUTH_SERVICES)
+    auth_service_id = ndb.StringProperty(required=True)
+    auth_service_name = ndb.StringProperty(required=False)
+    email = ndb.StringProperty(required=False)
 
     # Count Fields
-    total_requests                  = ndb.IntegerProperty(default=0)
+    total_requests = ndb.IntegerProperty(default=0)
 
     # Timestamps
-    created_at                      = ndb.DateTimeProperty(auto_now_add=True)
-    updated_at                      = ndb.DateTimeProperty(auto_now=True)
+    created_at = ndb.DateTimeProperty(auto_now_add=True)
+    updated_at = ndb.DateTimeProperty(auto_now=True)
 
     #
     # Virtual Attrs
@@ -95,7 +95,7 @@ class Guest(ndb.Model):
 
         requests = memcache.get(memcache_key)
         if not requests:
-            requests = GuestRequest.query(GuestRequest.guest_key==self.key) \
+            requests = GuestRequest.query(GuestRequest.guest_key == self.key) \
                                    .order(-GuestRequest.created_at) \
                                    .fetch(limit)
             memcache.set(memcache_key, requests, cache_life)
@@ -114,8 +114,8 @@ class Guest(ndb.Model):
         if guest:
             return guest
         else:
-            return Guest.create(auth_service = 'ip_address',
-                                auth_service_id = ip_address)
+            return Guest.create(auth_service='ip_address',
+                                auth_service_id=ip_address)
 
     @staticmethod
     def app_engine_user(app_engine_user):
@@ -130,19 +130,18 @@ class Guest(ndb.Model):
         if guest:
             return guest
         else:
-            return Guest.create(auth_service = 'app_engine',
-                                auth_service_id = user_id,
-                                email = app_engine_user.email(),
-                                auth_service_name = app_engine_user.nickname())
-
+            return Guest.create(auth_service='app_engine',
+                                auth_service_id=user_id,
+                                email=app_engine_user.email(),
+                                auth_service_name=app_engine_user.nickname())
 
     # CRUD Methods #############################################################
     @staticmethod
     def create(**fields):
-        guest = Guest(auth_service = fields.get('auth_service'),
-                      auth_service_id = fields.get('auth_service_id'),
-                      auth_service_name = fields.get('auth_service_name'),
-                      email = fields.get('email'))
+        guest = Guest(auth_service=fields.get('auth_service'),
+                      auth_service_id=fields.get('auth_service_id'),
+                      auth_service_name=fields.get('auth_service_name'),
+                      email=fields.get('email'))
 
         guest.put()
         return guest
@@ -163,7 +162,7 @@ class Guest(ndb.Model):
     @staticmethod
     def _by_unique_id(unique_id):
         try:
-            entity_id = int(unique_id)
+            # entity_id = int(unique_id)
             return ndb.Key('Guest', unique_id).get()
         except (TypeError, ValueError):
             return None
