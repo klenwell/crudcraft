@@ -2,7 +2,7 @@
     Test Helper
 """
 from unittest import TestCase
-from unittest import skip   # As convenience for test modules.
+from unittest import skip   # noqa: F401 (as convenience for test modules)
 from os.path import abspath, dirname, join
 import hashlib
 import random

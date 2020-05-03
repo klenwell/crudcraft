@@ -14,12 +14,10 @@ from os.path import dirname, join
 from datetime import date
 from functools import wraps
 
-from flask import (Flask, render_template, request, g, redirect, jsonify,
-                   flash, session, url_for)
+from flask import Flask, render_template, request, g, redirect, jsonify
+from flask import flash, url_for, session  # noqa: F401 (these are included for convenience)
 from flask.json import JSONEncoder
 from flask_wtf.csrf import CSRFProtect, CSRFError
-
-from google.appengine.api import users
 
 import config
 import helpers
@@ -52,6 +50,7 @@ csrf = CSRFProtect(app)
 def greet_guest():
     g.uest = guest_service.check_guest_in()
 
+
 @app.before_request
 def check_csrf():
     # ACCEPT_MOCK_CSRF_TOKEN config can be set in test config. If set, any
@@ -71,10 +70,11 @@ def check_csrf():
 @app.context_processor
 def common_variables():
     return dict(
-        config = config,
-        secrets = config.secrets,
-        today = date.today()
+        config=config,
+        secrets=config.secrets,
+        today=date.today()
     )
+
 
 #
 # Template Helper Methods
@@ -94,7 +94,10 @@ def template_helpers():
     app.jinja_env.globals.update(**helpers.api)
     return helpers.api
 
-## Exception Handlers
+
+#
+# Exception Handlers
+#
 @app.errorhandler(CSRFError)
 def csrf_error(reason):
     if request.is_xhr:
@@ -102,16 +105,19 @@ def csrf_error(reason):
     else:
         return render_template('400.html', message=reason), 400
 
+
 @app.errorhandler(403)
 def forbidden(e):
     """Return a custom 403 error."""
     message = str(e)
     return render_403(message)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""
     return render_404()
+
 
 @app.errorhandler(500)
 def application_error(e):
@@ -121,7 +127,10 @@ def application_error(e):
     else:
         return render_template('500.html', error=e), 500
 
-## Alternate Exception handlers
+
+#
+# Alternate Exception handlers
+#
 def render_404(message=None):
     if not message:
         message = 'Page not found.'
@@ -130,14 +139,16 @@ def render_404(message=None):
     else:
         return render_template('404.html', message=message), 404
 
+
 def render_403(message=None):
     if not message:
-        message ="Sorry. You can't see this page."
+        message = "Sorry. You can't see this page."
 
     if is_ajax_request(request):
         return jsonify(error=message), 403
     else:
         return render_template('403.html', message=message), 403
+
 
 #
 # Workflow Filters
@@ -152,6 +163,7 @@ def redirect_on_cancel():
         return wrapped
     return wrapper
 
+
 #
 # Authorization Filters
 #
@@ -160,7 +172,7 @@ def authenticated_only():
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not g.uest.is_authenticated():
-                return render_403('This page is restricted to authenticated users ' \
+                return render_403('This page is restricted to authenticated users '
                                   'at present. Please log in to view it.')
             return f(*args, **kwargs)
         return wrapped
@@ -172,7 +184,7 @@ def admin_only():
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not g.uest.is_admin():
-                return render_403('This page is restricted to authenticated users ' \
+                return render_403('This page is restricted to administrative users '
                                   'at present. Please log in to view it.')
             return f(*args, **kwargs)
         return wrapped
@@ -194,4 +206,4 @@ class CustomJSONEncoder(JSONEncoder):
         else:
             return list(iterable)
         return JSONEncoder.default(self, obj)
-app.json_encoder = CustomJSONEncoder
+app.json_encoder = CustomJSONEncoder  # noqa: E305 (don't require extra blank lines)
