@@ -1,8 +1,8 @@
 """
 # Cruds Controller
 """
-from controllers import (app, render_template, g, authenticated_only, redirect_on_cancel,
-                         request, redirect, url_for)
+from controllers import (app, render_template, g, authenticated_only, admin_only,
+                         redirect_on_cancel, request, redirect, url_for)
 from models.crud import Crud
 from forms.crud import CrudForm
 
@@ -26,7 +26,7 @@ def cruds_new():
 
 
 @app.route('/cruds/create/', methods=['POST'])
-@authenticated_only()
+@admin_only()
 @redirect_on_cancel()
 def cruds_create():
     form = CrudForm(request.form)

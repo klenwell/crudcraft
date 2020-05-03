@@ -79,6 +79,15 @@ def common_variables():
 #
 # Template Helper Methods
 #
+def is_ajax_request(request):
+    """Is it an AJAX/XMLHttpRequest? See https://stackoverflow.com/a/24687968/1093087.
+    """
+    # Deprecated
+    # return request.is_xhr
+    request_xhr_key = request.headers.get('X-Requested-With')
+    return request_xhr_key and request_xhr_key == 'XMLHttpRequest'
+
+
 @app.context_processor
 def template_helpers():
     # Make helpers available to jinja
@@ -107,7 +116,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def application_error(e):
     """Return a custom 500 error."""
-    if request.is_xhr:
+    if is_ajax_request(request):
         return jsonify(error=e), 500
     else:
         return render_template('500.html', error=e), 500
@@ -116,7 +125,7 @@ def application_error(e):
 def render_404(message=None):
     if not message:
         message = 'Page not found.'
-    if request.is_xhr:
+    if is_ajax_request(request):
         return jsonify(error=message), 404
     else:
         return render_template('404.html', message=message), 404
@@ -125,7 +134,7 @@ def render_403(message=None):
     if not message:
         message ="Sorry. You can't see this page."
 
-    if request.is_xhr:
+    if is_ajax_request(request):
         return jsonify(error=message), 403
     else:
         return render_template('403.html', message=message), 403
@@ -151,7 +160,19 @@ def authenticated_only():
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not g.uest.is_authenticated():
-                return render_403('This page is limited to authenticated users ' \
+                return render_403('This page is restricted to authenticated users ' \
+                                  'at present. Please log in to view it.')
+            return f(*args, **kwargs)
+        return wrapped
+    return wrapper
+
+
+def admin_only():
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not g.uest.is_admin():
+                return render_403('This page is restricted to authenticated users ' \
                                   'at present. Please log in to view it.')
             return f(*args, **kwargs)
         return wrapped
