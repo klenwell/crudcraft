@@ -9,12 +9,18 @@ from forms.filters import scrub
 
 
 #
+# Constants
+#
+MAX_CRUD_LENGTH = 256
+
+
+#
 # Forms
 #
 class CrudForm(FlaskForm):
     public_id = HiddenField('Required only for edit form.')
     content = StringField('Content',
-                          validators=[Required(), Length(max=280)],
+                          validators=[Required(), Length(max=MAX_CRUD_LENGTH)],
                           filters=[scrub])
 
     def preset(self, crud):

@@ -11,7 +11,7 @@ from flask_wtf import FlaskForm
 
 from models.guest import Guest
 from models.crud import Crud
-from forms.crud import CrudForm
+from forms.crud import CrudForm, MAX_CRUD_LENGTH
 
 from tests.helper import (AppEngineTestCase, MockIdentityService)
 
@@ -113,3 +113,26 @@ class CrudFormTest(AppEngineTestCase):
         self.assertTrue(form_is_valid)
         self.assertEqual(form.public_id.data, crud.public_id)
         self.assertEqual(form.content.data, content)
+
+    def test_expects_content_length_to_be_limited(self):
+        # Arrange
+        app = self.initApp()
+        test_cases = [
+            # (is_valid, content)
+            (True, 'a'),
+            (True, 'a' * MAX_CRUD_LENGTH),
+            (False, 'a' * (MAX_CRUD_LENGTH + 1))
+        ]
+
+        # Assume
+        self.assertEqual(len(test_cases[1][1]), MAX_CRUD_LENGTH)
+
+        # Act
+        with app.app_context():
+            for (expected_result, content) in test_cases:
+                request_form = ImmutableMultiDict([('content', content)])
+                form = CrudForm(request_form)
+                form_is_valid = form.validate()
+
+            # Assert
+            self.assertEqual(form_is_valid, expected_result)
