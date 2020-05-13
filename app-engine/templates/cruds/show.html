@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Crud{% endblock %}
+
+{% block append_head %}
+    <link rel="stylesheet" href="/assets/stylesheets/crud.css">
+{% endblock %}
+
+
+{% block content %}
+    <div id="cruds-show" class="cruds row">
+        <div class="main-column col-sm-9">
+            <h2>Crud</h2>
+
+            <div class="actions">
+                <a class="btn btn-primary" href="/cruds/">
+                    <span class="glyphicon glyphicon-home"></span>
+                    Recent Cruds
+                </a>
+            </div>
+
+            <div class="crud">
+                <dl class="dl-horizontal">
+                    <dt>Public ID</dt>
+                    <dd>{{ crud.public_id }}</dd>
+
+                    <dt>Date</dt>
+                    <dd>{{ at(crud.created_at) }}</dd>
+
+                    <dt>Content</dt>
+                    <dd>{{ crud.content }}</dd>
+
+                    <dt>Creator</dt>
+                    <dd class="arbiter">{{ crud.creator.public_name }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="side-column col-sm-3">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% import 'macros/form_helper.html' as form_helper %}
+
+<form role="form"
+      class="trigger-lock"
+      method="POST"
+      action="{{ url_for('cruds_create') }}">
+
+    {{ form.csrf_token }}
+    {{ form.public_id() }}
+
+    {{ form_helper.bootstrap_field(form.content) }}
+
+    <div class="actions">
+        <input type="submit"
+               class="trigger submit btn btn-primary"
+               name="submit"
+               value="Create">
+
+        <a class="btn btn-danger cancel" href="/cruds/" role="button">Cancel</a>
+    </div>
+
+</form>

@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div id="cruds-index" class="cruds">
+  <div class="header">
+    <h1>Recent Cruds</h1>
+
+    <div class="actions">
+      {% if g.uest.is_admin() %}
+        <a class="btn btn-primary btn-lg create-crud" href="/cruds/new" role="button">Create Crud</a>
+      {% endif %}
+    </div>
+
+    {% include table %}
+  </div>
+</div>
+{% endblock %}

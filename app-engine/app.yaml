@@ -23,6 +23,12 @@ inbound_services:
 handlers:
 
   #
+  # Cruds
+  #
+- url: /cruds(/.*)?
+  script: controllers.cruds.app
+
+  #
   # Static directories
   #
 - url: /assets

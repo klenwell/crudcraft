@@ -19,3 +19,7 @@ flask>=1.0.0
 
 # Flask forms
 Flask-WTF
+
+# User input sanitization: https://github.com/mozilla/bleach
+bleach
+setuptools
