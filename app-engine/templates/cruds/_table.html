@@ -1,0 +1,35 @@
+<table class="cruds table table-condensed">
+  <thead>
+    <tr>
+      <th>Date/Time</th>
+      <th>Creator</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% if not cruds: %}
+    <tr>
+      <td class="text-center" colspan="4">No cruds found.</td>
+    </tr>
+    {% else: %}
+      {% for crud in cruds: %}
+    <tr id='crud-{{ crud.public_id }}'
+        class='clickable'
+        data-href='/cruds/{{crud.public_id}}/'>
+      <td class="datetime momentize"
+          data-datetime="{{at(crud.created_at)}}"
+          title="{{at(crud.created_at)}}">
+        {{ at(crud.created_at) }}
+      </td>
+      <td class="creator">
+        {{ crud.creator.public_name }}
+      </td>
+      <td class="content">
+        {{ crud.content }}
+      </td>
+    </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>

@@ -1,0 +1,6 @@
+# Docs: https://flake8.pycqa.org/en/latest/user/configuration.html
+[flake8]
+ignore = D203
+exclude = .git,lib
+max-line-length = 100
+max-complexity = 10
